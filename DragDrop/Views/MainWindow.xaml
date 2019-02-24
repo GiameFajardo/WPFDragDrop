@@ -66,13 +66,24 @@
                         </DrawingBrush.Drawing>
                     </DrawingBrush>
                 </Border.BorderBrush>-->
-
+            <Grid
+                      Grid.Column="1" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="30"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="30"/>
+                </Grid.ColumnDefinitions>
+            
             <ListView x:Name="lvDrop" 
                       Background="LightBlue"
                       Padding="0"
+                      Grid.ColumnSpan="2"
+                      Grid.RowSpan="2"
                       BorderThickness="10"
                       BorderBrush="LightBlue"
-                      Grid.Column="1" 
                       ItemsSource="{Binding List2,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
                       DragEnter="lvDrop_DragEnter"
                       DragLeave="lvDrop_DragLeave"
@@ -96,7 +107,14 @@
                     </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
+                <Grid Grid.Column="1" Grid.Row="1" 
+                      Background="Red"
+                      AllowDrop="True"
+                      Drop="Grid_Drop">
+                    
+                </Grid>
             <!--</Border>-->
+            </Grid>
         </Grid>
     </Grid>
 </Window>

@@ -20,6 +20,9 @@ namespace DragDrop.ViewModels
         }
 
         public DelegateCommand<string> AddNewCommand { get; set; }
+        public DelegateCommand<Person> CopyToList2Command { get; set; }
+        public DelegateCommand<Person> RemoveFromList2Command { get; set; }
+        public DelegateCommand<Person> RemoveFromList2TCommand { get; set; }
         public ObservableCollection<Person> _list1;
         public ObservableCollection<Person> List1
         {
@@ -42,8 +45,27 @@ namespace DragDrop.ViewModels
         {
             PersonModel = new Person { Name = "New" };
             AddNewCommand = new DelegateCommand<string>(OnAddNew);
+            CopyToList2Command = new DelegateCommand<Person>(OnCopyToList2Command);
+            RemoveFromList2Command = new DelegateCommand<Person>(OnRemoveFromList2);
+            RemoveFromList2TCommand = new DelegateCommand<Person>(OnRemoveFromList2T);
             List1 = new ObservableCollection<Person>();
+            List2 = new ObservableCollection<Person>();
             List1.Add(new Person { Name = "Giame" });
+        }
+
+        private void OnCopyToList2Command(Person person)
+        {
+            List2.Add(person);
+        }
+
+        private void OnRemoveFromList2(Person person)
+        {
+            List2.Remove(person);
+        }
+
+        private void OnRemoveFromList2T(Person person)
+        {
+            List2.Remove(person);
         }
 
         private void OnAddNew(string Name)

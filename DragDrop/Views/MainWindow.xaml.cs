@@ -36,6 +36,34 @@ namespace DragDrop.Views
 
         private void lvDrag_PreviewMouseMove(object sender, MouseEventArgs e)
         {
+            // Get the current mouse position
+            Point mousePos = e.GetPosition(null);
+            Vector diff = startPoint - mousePos;
+
+            if (e.LeftButton == MouseButtonState.Pressed &&
+                Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
+                Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance)
+            {
+                // Get the dragged ListViewItem
+                ListView listView = sender as ListView;
+                ListViewItem listViewItem =
+                    FindAnchestor<ListViewItem>((DependencyObject)e.OriginalSource);
+                if (listViewItem != null)
+                {
+                    // Find the data behind the ListViewItem
+                    Person person = (Person)listView.ItemContainerGenerator.
+                        ItemFromContainer(listViewItem);
+
+                    // Initialize the drag & drop operation
+                    DataObject dragData = new DataObject("myFormat", person);
+                    System.Windows.DragDrop.DoDragDrop(listViewItem, dragData, DragDropEffects.Move);
+
+                }
+            }
+
+        }
+        private void lvDrag_MouseMove(object sender, MouseEventArgs e)
+        {
             //// Get the current mouse position
             //Point mousePos = e.GetPosition(null);
             //Vector diff = startPoint - mousePos;
@@ -47,15 +75,18 @@ namespace DragDrop.Views
             //    // Get the dragged ListViewItem
             //    ListView listView = sender as ListView;
             //    ListViewItem listViewItem =
-            //        FindAnchestor<ListViewItem>((DependencyObject)sender);
+            //        FindAnchestor<ListViewItem>((DependencyObject)e.OriginalSource);
+            //    if (listViewItem != null)
+            //    {
+            //        // Find the data behind the ListViewItem
+            //        Person person = (Person)listView.ItemContainerGenerator.
+            //            ItemFromContainer(listViewItem);
 
-            //    // Find the data behind the ListViewItem
-            //    Person person = (Person)listView.ItemContainerGenerator.
-            //        ItemFromContainer(listViewItem);
+            //        // Initialize the drag & drop operation
+            //        DataObject dragData = new DataObject("myFormat", person);
+            //        System.Windows.DragDrop.DoDragDrop(listViewItem, dragData, DragDropEffects.Move);
 
-            //    // Initialize the drag & drop operation
-            //    DataObject dragData = new DataObject("myFormat", person);
-            //    System.Windows.DragDrop.DoDragDrop(listViewItem, dragData, DragDropEffects.Move);
+            //    }
             //}
 
         }
@@ -88,44 +119,19 @@ namespace DragDrop.Views
 
         private void lvDrop_Drop(object sender, DragEventArgs e)
         {
+
+            var vm = (MainWindowViewModel)this.DataContext;
             if (e.Data.GetDataPresent("myFormat"))
             {
                 Person person = e.Data.GetData("myFormat") as Person;
-                ListView listView = sender as ListView;
-                listView.Items.Add(person);
+                //ListView listView = sender as ListView;
+                //listView.Items.Add(person);
+                vm.CopyToList2Command.Execute(person);
                 ((ListView)sender).BorderThickness = new Thickness(0);
                 ((ListView)sender).Padding = new Thickness(10);
             }
         }
 
-        private void lvDrag_MouseMove(object sender, MouseEventArgs e)
-        {
-            // Get the current mouse position
-            Point mousePos = e.GetPosition(null);
-            Vector diff = startPoint - mousePos;
-
-            if (e.LeftButton == MouseButtonState.Pressed &&
-                Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
-                Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance)
-            {
-                // Get the dragged ListViewItem
-                ListView listView = sender as ListView;
-                ListViewItem listViewItem =
-                    FindAnchestor<ListViewItem>((DependencyObject)e.OriginalSource);
-                if (listViewItem != null)
-                {
-                    // Find the data behind the ListViewItem
-                    Person person = (Person)listView.ItemContainerGenerator.
-                        ItemFromContainer(listViewItem);
-
-                    // Initialize the drag & drop operation
-                    DataObject dragData = new DataObject("myFormat", person);
-                    System.Windows.DragDrop.DoDragDrop(listViewItem, dragData, DragDropEffects.Move);
-
-                }
-            }
-
-        }
 
         private void lvDrop_DragLeave(object sender, DragEventArgs e)
         {
@@ -133,6 +139,16 @@ namespace DragDrop.Views
 
             ((ListView)sender).BorderThickness = new Thickness(0);
             ((ListView)sender).Padding = new Thickness(10);
+        }
+
+        private void Grid_Drop(object sender, DragEventArgs e)
+        {
+            var vm = (MainWindowViewModel)this.DataContext;
+            if (e.Data.GetDataPresent("myFormat"))
+            {
+                Person person = e.Data.GetData("myFormat") as Person;
+                vm.RemoveFromList2Command.Execute(person);
+            }
         }
     }
 }
