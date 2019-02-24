@@ -10,17 +10,28 @@ namespace DragDrop.ViewModels
 {
     public class MainWindowViewModel: BindableBase
     {
-        public MainWindowViewModel()
-        {
-            List1 = new ObservableCollection<Person>();
-            List1.Add(new Person { Name = "Giame" });
-        }
         public ObservableCollection<Person> _list1;
-        public ObservableCollection<Person> List1 { get { return _list1; }
+        public ObservableCollection<Person> List1
+        {
+            get { return _list1; }
             set
             {
                 _list1 = value;
             }
+        }
+        public ObservableCollection<Person> _list2;
+        public ObservableCollection<Person> List2
+        {
+            get { return _list2; }
+            set
+            {
+                _list2 = value;
+            }
+        }
+        public MainWindowViewModel()
+        {
+            List1 = new ObservableCollection<Person>();
+            List1.Add(new Person { Name = "Giame" });
         }
     }
 
