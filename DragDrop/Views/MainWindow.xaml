@@ -23,7 +23,12 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             
-            <ListView Grid.Column="0" ItemsSource="{Binding List1,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
+            <ListView x:Name="lvDrag" 
+                      Grid.Column="0" 
+                      ItemsSource="{Binding List1,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                      PreviewMouseLeftButtonDown="lvDrag_PreviewMouseLeftButtonDown"
+                      PreviewMouseMove="lvDrag_PreviewMouseMove"
+                      MouseMove="lvDrag_MouseMove">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel/>
@@ -31,15 +36,18 @@
                 </ListView.ItemsPanel>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Border CornerRadius="8" >
-                            <StackPanel Orientation="Vertical" Background="Aqua">
-                                <TextBlock Text="{Binding Name}"/>
-                            </StackPanel>
-                        </Border>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="{Binding Name}"/>
+                        </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <ListView Grid.Column="1" ItemsSource="{Binding List2,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
+            <ListView x:Name="lvDrop" 
+                      Grid.Column="1" 
+                      ItemsSource="{Binding List2,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                      DragEnter="lvDrop_DragEnter"
+                      Drop="lvDrop_Drop"
+                      >
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Vertical">
