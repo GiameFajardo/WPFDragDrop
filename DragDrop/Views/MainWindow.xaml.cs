@@ -79,8 +79,11 @@ namespace DragDrop.Views
             if (!e.Data.GetDataPresent("myFormat") ||
                 sender == e.Source)
             {
-                e.Effects = DragDropEffects.None;
+                e.Effects = DragDropEffects.Move;
             }
+            ((ListView)sender).BorderBrush = new SolidColorBrush(Colors.MistyRose);
+            ((ListView)sender).BorderThickness = new Thickness(10);
+            ((ListView)sender).Padding = new Thickness(0);
         }
 
         private void lvDrop_Drop(object sender, DragEventArgs e)
@@ -90,6 +93,8 @@ namespace DragDrop.Views
                 Person person = e.Data.GetData("myFormat") as Person;
                 ListView listView = sender as ListView;
                 listView.Items.Add(person);
+                ((ListView)sender).BorderThickness = new Thickness(0);
+                ((ListView)sender).Padding = new Thickness(10);
             }
         }
 
@@ -120,6 +125,14 @@ namespace DragDrop.Views
                 }
             }
 
+        }
+
+        private void lvDrop_DragLeave(object sender, DragEventArgs e)
+        {
+            ((ListView)sender).BorderBrush = new SolidColorBrush(Colors.LightBlue);
+
+            ((ListView)sender).BorderThickness = new Thickness(0);
+            ((ListView)sender).Padding = new Thickness(10);
         }
     }
 }

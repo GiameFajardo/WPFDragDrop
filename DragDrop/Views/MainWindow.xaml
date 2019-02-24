@@ -24,6 +24,9 @@
             </Grid.ColumnDefinitions>
             
             <ListView x:Name="lvDrag" 
+                      Background="LightGreen"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      Padding="10"
                       Grid.Column="0" 
                       ItemsSource="{Binding List1,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
                       PreviewMouseLeftButtonDown="lvDrag_PreviewMouseLeftButtonDown"
@@ -36,26 +39,64 @@
                 </ListView.ItemsPanel>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock Text="{Binding Name}"/>
-                        </StackPanel>
+                        <Border Padding="5,0" BorderBrush="LightPink" BorderThickness="1" CornerRadius="5" Background="MistyRose" Margin="0">
+
+                            <StackPanel Orientation="Vertical" Height="30" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                        Background="MistyRose" >
+                                <TextBlock Text="{Binding Name}" Foreground="HotPink" FontWeight="Bold" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <!--<Border BorderThickness="5,0,5,5">
+                <Border.BorderBrush>
+                    <DrawingBrush Viewport="0,0,8,8" ViewportUnits="Absolute" TileMode="Tile">
+                        <DrawingBrush.Drawing>
+                            <DrawingGroup>
+                                <GeometryDrawing Brush="Green">
+                                    <GeometryDrawing.Geometry>
+                                        <GeometryGroup>
+                                            <RectangleGeometry Rect="0,0,50,50" />
+                                            <RectangleGeometry Rect="50,50,50,50" />
+                                        </GeometryGroup>
+                                    </GeometryDrawing.Geometry>
+                                </GeometryDrawing>
+                            </DrawingGroup>
+                        </DrawingBrush.Drawing>
+                    </DrawingBrush>
+                </Border.BorderBrush>-->
+
             <ListView x:Name="lvDrop" 
+                      Background="LightBlue"
+                      Padding="0"
+                      BorderThickness="10"
+                      BorderBrush="LightBlue"
                       Grid.Column="1" 
                       ItemsSource="{Binding List2,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
                       DragEnter="lvDrop_DragEnter"
+                      DragLeave="lvDrop_DragLeave"
                       Drop="lvDrop_Drop"
-                      >
+                      AllowDrop="True" 
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock Text="{Binding Name}"/>
-                        </StackPanel>
+                        <Border Padding="5,0" BorderBrush="LightPink" BorderThickness="1" CornerRadius="5" Background="MistyRose" Margin="0">
+
+                            <StackPanel Orientation="Vertical" Height="30" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                        Background="MistyRose" >
+                                <TextBlock Text="{Binding Name}" Foreground="HotPink" FontWeight="Bold" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
                     </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                    </ListView.ItemTemplate>
+                </ListView>
+            <!--</Border>-->
         </Grid>
     </Grid>
 </Window>
