@@ -1,4 +1,5 @@
-﻿using Prism.Mvvm;
+﻿using Prism.Commands;
+using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,6 +11,15 @@ namespace DragDrop.ViewModels
 {
     public class MainWindowViewModel: BindableBase
     {
+        private Person _personModel;
+
+        public Person PersonModel
+        {
+            get { return _personModel; }
+            set { SetProperty(ref _personModel, value);}
+        }
+
+        public DelegateCommand<string> AddNewCommand { get; set; }
         public ObservableCollection<Person> _list1;
         public ObservableCollection<Person> List1
         {
@@ -30,8 +40,15 @@ namespace DragDrop.ViewModels
         }
         public MainWindowViewModel()
         {
+            PersonModel = new Person { Name = "New" };
+            AddNewCommand = new DelegateCommand<string>(OnAddNew);
             List1 = new ObservableCollection<Person>();
             List1.Add(new Person { Name = "Giame" });
+        }
+
+        private void OnAddNew(string Name)
+        {
+            List1.Add(new Person { Name = Name });
         }
     }
 
