@@ -113,7 +113,7 @@ namespace DragDrop.Views
             if (!e.Data.GetDataPresent("myFormat") ||
                 sender == e.Source)
             {
-                e.Effects = DragDropEffects.Move;
+                e.Effects = DragDropEffects.None;
             }
             if (!e.Data.GetDataPresent("DeleteFormat"))
             {
@@ -214,6 +214,61 @@ namespace DragDrop.Views
             {
                 vm.DeleteVisibility = Visibility.Visible;
             }
+        }
+
+        private void ListViewItem_MouseMove(object sender, MouseEventArgs e)
+        {
+            Mouse.OverrideCursor = Cursors.Hand;
+          
+
+            fp_Move_Control(sender, e);
+        }
+        private void fp_Move_Control(object sender, MouseEventArgs e)
+        {
+            //----------------< fp_Move_Control() >---------------- 
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                if (true/*Mouse.OverrideCursor == Cursors.Hand*/) //nur bewegen, wenn Cursor auf Bewegung steht 
+                {
+                    ListViewItem objTextbox = (ListViewItem)sender;
+                    if (objTextbox != null)
+                    {
+                        //----< Move Control >---- 
+                        Point mousePoint = e.GetPosition(this);
+
+                        //< Vertical > 
+                        int posY = (int)mousePoint.Y;
+                        int actHeight = (int)Application.Current.MainWindow.Height;
+                        int margin_Bottom = actHeight - (posY + (int)objTextbox.ActualHeight + (int)SystemParameters.CaptionHeight + (int)SystemParameters.BorderWidth + 4);
+                        //</ Vertical > 
+
+                        //< Horizontal > 
+                        int posX = (int)mousePoint.X;
+                        int actWidth = (int)Application.Current.MainWindow.Width;
+                        int margin_Right = actWidth - (posX + (int)objTextbox.ActualWidth + (int)SystemParameters.BorderWidth);
+                        //</ Horizontal > 
+
+                        //< Objekt bewegen > 
+                        objTextbox.Margin = new Thickness(posX, posY, margin_Right, margin_Bottom);
+                        //</ Objekt bewegen > 
+
+                       // ctlStatus.Text = "Top=" + posY + " margin_bottom=" + margin_Bottom + " WinHeigth=" + actHeight + Environment.NewLine + " Left=" + posX + " margin_Right=" + margin_Right + "WinWidth=" + actWidth;
+
+                        //< Cursor anpassen > 
+                        Mouse.OverrideCursor = Cursors.Hand;
+                        //</ Cursor anpassen > 
+                        //----</ Move Control >---- 
+                    }
+                }
+            }
+            else
+            {
+                //< Cursor reset > 
+                Mouse.OverrideCursor = Cursors.Arrow;
+                //</ Cursor reset > 
+            }
+            //----------------< fp_Move_Control() >---------------- 
+
         }
     }
 }

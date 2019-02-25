@@ -83,6 +83,11 @@
                       PreviewMouseLeftButtonDown="lvDrag_PreviewMouseLeftButtonDown"
                       PreviewMouseMove="lvDrag_PreviewMouseMove"
                       MouseMove="lvDrag_MouseMove">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <EventSetter Event="MouseMove" Handler="ListViewItem_MouseMove" />
+                    </Style>
+                </ListView.ItemContainerStyle>
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel/>
