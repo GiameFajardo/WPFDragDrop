@@ -8,14 +8,65 @@
         xmlns:prism="http://prismlibrary.com/"
         prism:ViewModelLocator.AutoWireViewModel="True"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <Window.Resources>
+        <ControlTemplate x:Key="TextBoxBaseControlTemplate" TargetType="{x:Type TextBoxBase}">
+            <Border Background="{TemplateBinding Background}" 
+                x:Name="Bd" BorderBrush="#84bd00"
+                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="22,22,0,0">
+                <ScrollViewer x:Name="PART_ContentHost"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="BorderBrush" Value="#84bd00" TargetName="Bd"/>
+
+                </Trigger>
+                <Trigger Property="IsReadOnly" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" TargetName="Bd"/>
+                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                    <Setter Property="BorderBrush" Value="#E32675" TargetName="Bd"/>
+
+                </Trigger>
+                <Trigger Property="Width" Value="Auto">
+                    <Setter Property="MinWidth" Value="100"/>
+                </Trigger>
+                <Trigger Property="Height" Value="Auto">
+                    <Setter Property="MinHeight" Value="20"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Window.Resources>
+    <Grid Background="LightCoral">
         <Grid.RowDefinitions>
             <RowDefinition Height="200"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Vertical">
-            <TextBox Width="300" Text="{Binding PersonModel.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <Button Width="300" Height="50" Command="{Binding AddNewCommand}" CommandParameter="{Binding PersonModel.Name}"/>
+        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+            <TextBox Width="300" Height="40" TextAlignment="Center" Padding="0,10,0,0" FontSize="20"
+                     Text="{Binding PersonModel.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                     Template="{StaticResource TextBoxBaseControlTemplate}" />
+            <Border CornerRadius="0,0,22,22" 
+                    Width="300" 
+                    BorderBrush="Red" 
+                    BorderThickness="0" 
+                    HorizontalAlignment="Center"
+                    Background="#eaf2ff"
+                    Height="50"
+                    Padding="10,0">
+                <Button HorizontalAlignment="Stretch"  
+                        VerticalAlignment="Stretch"
+                        Background="#eaf2ff" 
+                        Foreground="#1A4579" 
+                        FontFamily="Bahnschrift" 
+                        FontSize="17"
+                        FontWeight="Thin"
+                        Content="ADD NEW" 
+                        BorderThickness="0"
+                    Width="300" Height="40"
+                    Command="{Binding AddNewCommand}" 
+                    CommandParameter="{Binding PersonModel.Name}"
+                    >
+                </Button>
+            </Border>
         </StackPanel>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -88,6 +139,10 @@
                       DragEnter="lvDrop_DragEnter"
                       DragLeave="lvDrop_DragLeave"
                       Drop="lvDrop_Drop"
+                      PreviewMouseLeftButtonDown="lvDrop_PreviewMouseLeftButtonDown"
+                      MouseDown="lvDrop_MouseDown"
+                      MouseMove="lvDrop_MouseMove"
+                      DragOver="lvDrop_DragOver"
                       AllowDrop="True" 
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListView.ItemsPanel>
@@ -108,10 +163,11 @@
                     </ListView.ItemTemplate>
                 </ListView>
                 <Grid Grid.Column="1" Grid.Row="1" 
-                      Background="Red"
+                      Background="Transparent"
                       AllowDrop="True"
-                      Drop="Grid_Drop">
-                    
+                      Drop="Grid_Drop"
+                      Visibility="{Binding DeleteVisibility}">
+                    <Image Source="../Images/borrar.png"/>
                 </Grid>
             <!--</Border>-->
             </Grid>

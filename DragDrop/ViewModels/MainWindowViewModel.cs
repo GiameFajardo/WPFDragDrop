@@ -6,11 +6,20 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace DragDrop.ViewModels
 {
     public class MainWindowViewModel: BindableBase
     {
+        private Visibility _deleteVisibility = Visibility.Collapsed;
+
+        public Visibility DeleteVisibility 
+        {
+            get { return _deleteVisibility; }
+            set { SetProperty(ref _deleteVisibility, value); }
+        }
+
         private Person _personModel;
 
         public Person PersonModel
@@ -43,7 +52,8 @@ namespace DragDrop.ViewModels
         }
         public MainWindowViewModel()
         {
-            PersonModel = new Person { Name = "New" };
+
+            PersonModel = new Person();
             AddNewCommand = new DelegateCommand<string>(OnAddNew);
             CopyToList2Command = new DelegateCommand<Person>(OnCopyToList2Command);
             RemoveFromList2Command = new DelegateCommand<Person>(OnRemoveFromList2);
@@ -71,6 +81,7 @@ namespace DragDrop.ViewModels
         private void OnAddNew(string Name)
         {
             List1.Add(new Person { Name = Name });
+            PersonModel = new Person();
         }
     }
 
